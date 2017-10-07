@@ -1,0 +1,67 @@
+{% extends "base.html.twig" %}
+
+{% block local_javascript %}
+
+    <script>
+    	$(document).ready( function () {
+    	    $('#readings').DataTable({
+    	    	"paging": false,
+    		});
+    	});
+
+    	$(".status").each(function() {
+        	var attr_id = $(this).attr('id');
+        	var mms_id = attr_id.substring(7);
+        	var course_id = "{{ course_id }}";
+        	
+            $.getJSON(course_id + "/" + mms_id, function(data) {
+            	$.each( data, function(key, item) {
+                	console.log(item.mms_id);
+                	$("#location-" + item.mms_id).replaceWith(item.location);
+                	$("#call-number-" + item.mms_id).replaceWith(item.call_number);
+                	$("#status-" + item.mms_id).replaceWith(item.availability);
+            	});
+            });
+    	});
+
+    </script>
+
+{% endblock %}
+
+{% block content %}
+
+    <div id="course">
+    
+    	<h1>{{ course|display_course_name }}</h1>
+    	<h2>{{ course|display_instructors }}</h2>
+    
+    	<table id="readings" class="display">
+    		<thead>
+    	    	<tr>
+    	    		<td>Title</td>
+    	    		<td>Author</td>
+    	    		<td>Location</td>
+    	    		<td>Call Number</td>
+    	    		<td>Availability</td>
+    	    	</tr>
+    	    </thead>
+    	    {% for list in course.readinglists %}
+    		{% for citation in list.citations %}
+    		{% set metadata = citation.metadata %}
+    		{% if not metadata.title == "" and not metadata.author == "" %}
+    		<tr>
+    			<td><a href="{{ citation.openurl }}">{{ metadata|display_title }}</a></td>
+    			<td>{{ metadata.author }}</td>
+    			<td><div class="update" id="location-{{ metadata|mmsid }}">Checking . . . </div></td>
+    			<td><div class="update" id="call-number-{{ metadata|mmsid }}">{{ metadata.callnumber }}</div></td>
+    			<td><div class="update status" id="status-{{ metadata|mmsid }}">Checking . . .</div></td>
+    		</tr>
+    		{% endif %}
+    		{% endfor %}
+    		{% endfor %}
+    	</table>
+    	
+    	<p class="last-update">Last updated {{ "now"|date("m-d-Y g:i a") }}</p>
+    </div>
+
+{%  endblock %}

@@ -1,0 +1,12 @@
+{
+	"require": {
+        "dswalker/alma-api": "dev-master",
+        "silex/silex": "^2.2",
+        "twig/twig": "^1.35"
+    },
+        "autoload": {
+        "psr-4": {
+            "Reserves\\": "src/"
+        }
+    }
+}

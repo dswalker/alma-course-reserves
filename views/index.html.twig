@@ -1,0 +1,46 @@
+{% extends "base.html.twig" %}
+
+{% block local_javascript %}
+
+    <script>
+    	$(document).ready( function () {
+    	    $('#courses').DataTable({
+    	    	"paging": false,
+    	    	"oLanguage": {
+    			    "sSearch": "Course and/or instructor:"
+    			  }
+    		});
+    	} );
+    </script>
+
+{% endblock %}
+
+{% block content %}
+
+    <div class="courses">
+    
+    	<h1>Course Reserves</h1>
+    
+    	<table id="courses" class="display" style="width:100%">
+    		<thead>
+    	    	<tr>
+    	    		<td>Course</td>
+    	    		<td>Instructor</td>
+    	    	</tr>
+    	    </thead>
+    		{%  for course in courses %}
+    		<tr>
+    			<td>
+    				<a href="course/{{ course.id }}">
+    					{{ course|display_course_name }}
+    				</a>
+    			</td>
+    			<td>{{ course|display_instructors }}</td>
+    		</tr>
+    		{% endfor %}
+    	</table>
+    
+    	<p class="last-update">Last updated {{ last_updated }}</p>
+    </div>
+    
+{%  endblock %}
