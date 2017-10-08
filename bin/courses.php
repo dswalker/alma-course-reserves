@@ -1,9 +1,9 @@
 <?php
 
+require_once __DIR__ . '/../vendor/autoload.php';
+
 chdir(__DIR__ . '/../');
 ini_set('display_errors', '1');
-
-require_once __DIR__ . '../vendor/autoload.php';
 
 use Reserves\CourseList;
 
@@ -72,7 +72,6 @@ foreach ($campuses as $campus ) {
 		file_put_contents("data/$campus.data", serialize($course_list));
 		
 		echo "\r fetching . . . done.\n";
-		break;
     } catch (Exception $e) {
         echo "ERROR:" . $e->getMessage() . "\n" . $e->getTraceAsString() . "\n\n";
     }
