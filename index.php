@@ -20,7 +20,7 @@ $app['debug'] = true;
 // set-up twig
 
 $app->register(new TwigServiceProvider(), array(
-    'twig.path' => __DIR__ . '/views',
+    'twig.path' => array("campuses/$campus/views", __DIR__ . '/views'),
 ));
 
 // custom twig filters (=functions)
