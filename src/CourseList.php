@@ -126,7 +126,8 @@ class CourseList
                             'mms_id' => $mms_id,
                             'location' => $location,
                             'call_number' => $item_json['holding_data']['call_number'],
-                            'availability' => $item_json['item_data']['base_status']['desc']
+                            'availability' => $item_json['item_data']['base_status']['desc'],
+                            'available' => $item_json['item_data']['base_status']['value'],
                         );
                     }
                 }

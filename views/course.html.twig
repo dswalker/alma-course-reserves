@@ -9,18 +9,58 @@
     		});
     	});
 
-    	$(".status").each(function() {
-        	var attr_id = $(this).attr('id');
-        	var mms_id = attr_id.substring(7);
+    	$(".reading").each(function() {
+        	var row = $(this);
+        	var attr_id = row.attr('id');
+        	var mms_id = attr_id.substring(4);
         	var course_id = "{{ course_id }}";
         	
             $.getJSON(course_id + "/" + mms_id, function(data) {
+
+            	var location = "";
+            	var call_number = "";
+            	var availability = "";
+            	var num_available = 0;
+            	var num_unavailable = 0;
+            	
             	$.each( data, function(key, item) {
-                	console.log(item.mms_id);
-                	$("#location-" + item.mms_id).replaceWith(item.location);
-                	$("#call-number-" + item.mms_id).replaceWith(item.call_number);
-                	$("#status-" + item.mms_id).replaceWith(item.availability);
+                	
+					if (location != "" && location != item.location) {
+						location = '<a href="#">Multiple locations</a>';						
+					} else {
+						location = item.location;
+					}
+					
+            		if (call_number != "" && call_number != item.call_number) {
+						call_number = '<a href="#">Multiple call numbers</a>';						
+					} else {
+						call_number = item.call_number;
+					}
+
+					if (availability != "" && availability != item.availability) {
+						availability = '<a href="#">Check availability</a>';					
+					} else {
+						availability = item.availability;
+					}
+
+					if (item.available == '1') {
+						num_available++;
+					}
+					
+					if (item.available == '0') {
+						num_unavailable++;
+					}
             	});
+
+            	var availability_statement = num_available + " available";
+
+            	if (num_unavailable > 0) {
+            		availability_statement = num_available + " of " + data.length + " available";
+            	}
+                
+                $("#row-" + mms_id + " > td > div.location").replaceWith(location);
+                $("#row-" + mms_id + " > td > div.call-number").replaceWith(call_number);
+                $("#row-" + mms_id + " > td > div.status").replaceWith(availability_statement);
             });
     	});
 
@@ -49,12 +89,12 @@
     		{% for citation in list.citations %}
     		{% set metadata = citation.metadata %}
     		{% if not metadata.title == "" and not metadata.author == "" %}
-    		<tr>
+    		<tr class="reading" id="row-{{ metadata|mmsid }}">
     			<td><a href="{{ citation.openurl }}">{{ metadata|display_title }}</a></td>
     			<td>{{ metadata.author }}</td>
-    			<td><div class="update" id="location-{{ metadata|mmsid }}">Checking . . . </div></td>
-    			<td><div class="update" id="call-number-{{ metadata|mmsid }}">{{ metadata.callnumber }}</div></td>
-    			<td><div class="update status" id="status-{{ metadata|mmsid }}">Checking . . .</div></td>
+    			<td><div class="update location">Checking . . . </div></td>
+    			<td><div class="update call-number">{{ metadata.callnumber }}</div></td>
+    			<td><div class="update status">Checking . . .</div></td>
     		</tr>
     		{% endif %}
     		{% endfor %}
