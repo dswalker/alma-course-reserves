@@ -14,6 +14,7 @@
         	var attr_id = row.attr('id');
         	var mms_id = attr_id.substring(4);
         	var course_id = "{{ course_id }}";
+        	var openurl = $(this).find('a.openurl').attr('href');
         	
             $.getJSON(course_id + "/" + mms_id, function(data) {
 
@@ -21,24 +22,24 @@
             	var call_number = "";
             	var availability = "";
             	var num_available = 0;
-            	var num_unavailable = 0;
             	
             	$.each( data, function(key, item) {
                 	
 					if (location != "" && location != item.location) {
-						location = '<a href="#">Multiple locations</a>';						
+						location = '<a href="' + openurl + '" target="_blank">Multiple locations</a>';						
 					} else {
 						location = item.location;
 					}
 					
             		if (call_number != "" && call_number != item.call_number) {
-						call_number = '<a href="#">Multiple call numbers</a>';						
+						call_number = '<a href="' + openurl + '" target="_blank">Multiple call numbers</a>';						
 					} else {
 						call_number = item.call_number;
 					}
 
 					if (availability != "" && availability != item.availability) {
-						availability = '<a href="#">Check availability</a>';					
+						openurl
+						availability = '<a href="' + openurl + '" target="_blank">Check availability</a>';					
 					} else {
 						availability = item.availability;
 					}
@@ -46,21 +47,17 @@
 					if (item.available == '1') {
 						num_available++;
 					}
-					
-					if (item.available == '0') {
-						num_unavailable++;
-					}
             	});
 
             	var availability_statement = num_available + " available";
 
-            	if (num_unavailable > 0) {
+            	if (num_available < data.length) {
             		availability_statement = num_available + " of " + data.length + " available";
-            	}
+                }
                 
-                $("#row-" + mms_id + " > td > div.location").replaceWith(location);
-                $("#row-" + mms_id + " > td > div.call-number").replaceWith(call_number);
-                $("#row-" + mms_id + " > td > div.status").replaceWith(availability_statement);
+                $("#row-" + mms_id + " div.location").replaceWith(location);
+                $("#row-" + mms_id + " div.call-number").replaceWith(call_number);
+                $("#row-" + mms_id + " div.status").replaceWith(availability_statement);
             });
     	});
 
@@ -90,7 +87,7 @@
     		{% set metadata = citation.metadata %}
     		{% if not metadata.title == "" and not metadata.author == "" %}
     		<tr class="reading" id="row-{{ metadata|mmsid }}">
-    			<td><a href="{{ citation.openurl }}">{{ metadata|display_title }}</a></td>
+    			<td><a class="openurl" href="{{ citation.openurl }}">{{ metadata|display_title }}</a></td>
     			<td>{{ metadata.author }}</td>
     			<td><div class="update location">Checking . . . </div></td>
     			<td><div class="update call-number">{{ metadata.callnumber }}</div></td>
@@ -103,5 +100,5 @@
     	
     	<p class="last-update">Last updated {{ "now"|date("m-d-Y g:i a") }}</p>
     </div>
-
+    
 {%  endblock %}
