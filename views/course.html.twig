@@ -85,7 +85,7 @@
     	    {% for list in course.readinglists %}
     		{% for citation in list.citations %}
     		{% set metadata = citation.metadata %}
-    		{% if not metadata.title == "" and not metadata.author == "" %}
+    		{% if not ( metadata.title == "" and metadata.articletitle == "" and metadata.author == "") %}
     		<tr class="reading" id="row-{{ metadata|mmsid }}">
     			<td><a class="openurl" href="{{ citation.openurl }}">{{ metadata|display_title }}</a></td>
     			<td>{{ metadata.author }}</td>
