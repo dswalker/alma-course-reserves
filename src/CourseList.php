@@ -20,9 +20,9 @@ use Alma\Courses;
 class CourseList
 {
     /**
-     * @var array
+     * @var Config
      */
-    protected $config = array();
+    protected $config;
     
     /**
      * @var string
@@ -34,7 +34,7 @@ class CourseList
      */
     public function __construct($campus)
     {
-        $this->config = parse_ini_file("campuses/$campus/config.ini", true);
+        $this->config = new Config("campuses/$campus/config.ini");
         $this->campus = $campus;
     }
     
@@ -45,11 +45,11 @@ class CourseList
      */
     public function getCourses()
     {
-        if ($this->config['api_key'] == "") {
+        if ($this->config->get('api_key') == "") {
             return false;    
         }
         
-        return new Courses($this->config['host'], $this->config['api_key']);
+        return new Courses($this->config->get('host'), $this->config->get('api_key'));
     }
     
     /**
@@ -62,7 +62,7 @@ class CourseList
     {
         $url = "https://api-na.hosted.exlibrisgroup.com/primo/v1/pnxs?" . 
             "q=any,contains,$id" .
-            "&apikey=" . $this->config['api_key'];
+            "&apikey=" . $this->config->get('api_key');
         
         $results = file_get_contents($url);
         $json = json_decode($results, true);
@@ -81,7 +81,7 @@ class CourseList
         }
         
         // got one, send them directly!
-        $url = $this->config['primo_url'];
+        $url = $this->config->get('primo_url');
         $url = str_replace('{{docid}}', $primo_id, $url);
         return $url;
     }
@@ -96,7 +96,7 @@ class CourseList
     {
         $items = array();
 
-        $query = "format=json&apikey=" . $this->config['api_key'];
+        $query = "format=json&apikey=" . $this->config->get('api_key');
         $url = "https://api-na.hosted.exlibrisgroup.com/almaws/v1/bibs/$mms_id/holdings?$query";
                     
         $results = file_get_contents($url);
