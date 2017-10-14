@@ -32,10 +32,10 @@
     		<tr>
     			<td>
     				<a href="course/{{ course.id }}">
-    					{{ course|display_course_name }}
+    					{{ course|course_name }}
     				</a>
     			</td>
-    			<td>{{ course|display_instructors }}</td>
+    			<td>{{ course|instructors }}</td>
     		</tr>
     		{% endfor %}
     	</table>

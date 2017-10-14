@@ -69,8 +69,8 @@
 
     <div id="course">
     
-    	<h1>{{ course|display_course_name }}</h1>
-    	<h2>{{ course|display_instructors }}</h2>
+    	<h1>{{ course|course_name }}</h1>
+    	<h2>{{ course|instructors }}</h2>
     
     	<table id="readings" class="display">
     		<thead>
@@ -87,7 +87,12 @@
     		{% set metadata = citation.metadata %}
     		{% if not ( metadata.title == "" and metadata.articletitle == "" and metadata.author == "") %}
     		<tr class="reading" id="row-{{ metadata|mmsid }}">
-    			<td><a class="openurl" href="{{ citation.openurl }}">{{ metadata|display_title }}</a></td>
+    			<td>
+    				<a class="openurl" href="{{ citation.openurl }}">{{ metadata|title }}</a>
+    				{% if metadata.edition != "" %}
+    					<span> ({{ metadata.edition }})</span>
+    				{% endif %}
+    			</td>
     			<td>{{ metadata.author }}</td>
     			<td><div class="update location">Checking . . . </div></td>
     			<td><div class="update call-number">{{ metadata.callnumber }}</div></td>

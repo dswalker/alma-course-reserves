@@ -48,10 +48,10 @@ class CourseFormatter extends Twig_Extension
     public function getFilters()
     {
         return array(
-            new Twig_SimpleFilter('display_course_name', array($this, 'displayCourseName')),
-            new Twig_SimpleFilter('display_instructors', array($this, 'displayInstructors')),
-            new Twig_SimpleFilter('display_title', array($this, 'displayTitle')),
-            new Twig_SimpleFilter('display_publication_info', array($this, 'displayPublicationInfo')),
+            new Twig_SimpleFilter('course_name', array($this, 'displayCourseName')),
+            new Twig_SimpleFilter('instructors', array($this, 'displayInstructors')),
+            new Twig_SimpleFilter('title', array($this, 'displayTitle')),
+            new Twig_SimpleFilter('publication_info', array($this, 'displayPublicationInfo')),
             new Twig_SimpleFilter('mmsid', array($this, 'getMmsId')),
         );
     }
