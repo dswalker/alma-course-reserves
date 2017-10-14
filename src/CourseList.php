@@ -25,17 +25,11 @@ class CourseList
     protected $config;
     
     /**
-     * @var string
-     */
-    protected $campus;
-    
-    /**
      * New CourseList object
      */
-    public function __construct($campus)
+    public function __construct(Config $config)
     {
-        $this->config = new Config("campuses/$campus/config.ini");
-        $this->campus = $campus;
+        $this->config = $config;
     }
     
     /**

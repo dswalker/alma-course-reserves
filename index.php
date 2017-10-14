@@ -6,11 +6,14 @@ chdir(__DIR__);
 
 require_once 'vendor/autoload.php';
 
+use Reserves\Config;
 use Reserves\CourseFormatter;
 use Reserves\CourseList;
 use Silex\Provider\TwigServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+
+$config = new Config("campuses/$campus/config.ini");
 
 // set-up app
 
@@ -25,7 +28,7 @@ $app->register(new TwigServiceProvider(), array(
 
 // custom twig filters (=functions)
 
-$app['twig'] = $app->extend("twig", function (\Twig_Environment $twig, Silex\Application $app) use ($campus) {
+$app['twig'] = $app->extend("twig", function (\Twig_Environment $twig, Silex\Application $app) {
     $twig->addExtension(new CourseFormatter());
     return $twig;
 });
@@ -48,10 +51,10 @@ $app->get('/', function(Request $request) use ($app, $campus) {
 
 // individual course page
 
-$app->get('/course/{course_id}', function(Request $request, $course_id) use ($app, $campus) {
+$app->get('/course/{course_id}', function(Request $request, $course_id) use ($app, $campus, $config) {
     
     // get the course
-    $list = new CourseList($campus);
+    $list = new CourseList($config);
     $course = $list->getCourses()->getCourse($course_id);
     
     // debugging
@@ -69,9 +72,9 @@ $app->get('/course/{course_id}', function(Request $request, $course_id) use ($ap
 
 // holdings and status
 
-$app->get('/course/{course_id}/{mms_id}', function($course_id, $mms_id) use ($app, $campus) {
+$app->get('/course/{course_id}/{mms_id}', function($course_id, $mms_id) use ($app, $config) {
 
-    $list = new CourseList($campus);
+    $list = new CourseList($config);
     $items = $list->getItems($mms_id);
     
     return response(json_encode($items), 'application/json');

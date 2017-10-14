@@ -5,6 +5,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 chdir(__DIR__ . '/../');
 ini_set('display_errors', '1');
 
+use Reserves\Config;
 use Reserves\CourseList;
 
 // specify campus(es)
@@ -39,7 +40,8 @@ foreach ($campuses as $campus ) {
     
     try {
         
-        $processor = new CourseList($campus);
+        $config = new Config("campuses/$campus/config.ini");
+        $processor = new CourseList($config);
         $courses = $processor->getCourses();
         
         if ( $courses == false ) {
