@@ -29,22 +29,22 @@ class CourseFormatter extends Twig_Extension
     public function getFilters()
     {
         return array(
-            new Twig_SimpleFilter('course_name', array($this, 'displayCourseName')),
-            new Twig_SimpleFilter('instructors', array($this, 'displayInstructors')),
-            new Twig_SimpleFilter('title', array($this, 'displayTitle')),
-            new Twig_SimpleFilter('edition', array($this, 'displayEdition')),
-            new Twig_SimpleFilter('publication_info', array($this, 'displayPublicationInfo')),
+            new Twig_SimpleFilter('course_name', array($this, 'getCourseName')),
+            new Twig_SimpleFilter('instructors', array($this, 'getInstructors')),
+            new Twig_SimpleFilter('title', array($this, 'getTitle')),
+            new Twig_SimpleFilter('edition', array($this, 'getEdition')),
+            new Twig_SimpleFilter('publication_info', array($this, 'getPublicationInfo')),
             new Twig_SimpleFilter('mmsid', array($this, 'getMmsId')),
         );
     }
     
     /**
-     * Return course code and name
+     * Course code and name for display
      *
      * @param Course $course
      * @return string
      */
-    public function displayCourseName(Course $course)
+    public function getCourseName(Course $course)
     {
         $code = $course->getCode();
         $name = $course->getName();
@@ -60,12 +60,12 @@ class CourseFormatter extends Twig_Extension
     }
     
     /**
-     * Return instructors in collapsed list
+     * Instructors in collapsed list
      *
      * @param Course $course
      * @return string
      */
-    public function displayInstructors(Course $course)
+    public function getInstructors(Course $course)
     {
         // instructor assigned to course
     
@@ -96,14 +96,14 @@ class CourseFormatter extends Twig_Extension
     }
     
     /**
-     * Title for display
+     * Title formatted for display
      * 
      * Show title, remove statement of responsibility
      * 
      * @param Metadata $metadata
      * @return string
      */
-    public function displayTitle(Metadata $metadata)
+    public function getTitle(Metadata $metadata)
     {
         $title = $metadata->getTitle();
         $jtitle = $metadata->getJournalTitle();
@@ -129,7 +129,7 @@ class CourseFormatter extends Twig_Extension
      * @param Metadata $metadata
      * @return string
      */
-    public function displayEdition(Metadata $metadata)
+    public function getEdition(Metadata $metadata)
     {
         $edition = $metadata->getEdition();
         
@@ -150,7 +150,7 @@ class CourseFormatter extends Twig_Extension
      * @param Metadata $metadata
      * @return string
      */
-    public function displayPublicationInfo(Metadata $metadata)
+    public function getPublicationInfo(Metadata $metadata)
     {
         $final = "";
         $place = $metadata->getPlaceOfPublication();
