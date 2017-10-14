@@ -93,7 +93,7 @@
     			<td>
     				<a class="openurl" href="{{ citation.openurl }}">{{ metadata|title }}</a>
     				{% if metadata.edition != "" %}
-    					<span> ({{ metadata.edition }})</span>
+    					<span> ({{ metadata|edition }})</span>
     				{% endif %}
     			</td>
     			<td>{{ metadata.author }}</td>
