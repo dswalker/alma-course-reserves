@@ -6,6 +6,9 @@
     	$(document).ready( function () {
     	    $('#readings').DataTable({
     	    	"paging": false,
+      		  	"columnDefs": [
+          		  	{ "orderable": false, "targets": [2,3,4] }
+      		  	]
     		});
     	});
 
