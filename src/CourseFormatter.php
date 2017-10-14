@@ -132,6 +132,20 @@ class CourseFormatter extends Twig_Extension
     public function getEdition(Metadata $metadata)
     {
         $edition = $metadata->getEdition();
+        $edition = trim($edition);
+        
+        // just a number, so add suffix
+        if ( is_numeric($edition)) {
+            if ($edition == '1') {
+                $edition .= 'st';
+            } elseif ($edition == '2') {
+                $edition .= 'nd';
+            } elseif ($edition == '3') {
+                $edition .= 'rd';
+            } else {
+                $edition .= 'th';
+            }
+        }
         
         // check for edition number but not the word edition
         if (!stristr($edition, 'ed') && (stristr($edition, 'st') || stristr($edition, 'nd') || 
