@@ -23,25 +23,6 @@ use Twig_SimpleFilter;
 class CourseFormatter extends Twig_Extension
 {
     /**
-     * @var array
-     */
-    protected $config = array();
-    
-    /**
-     * @var string
-     */
-    protected $campus;
-    
-    /**
-     * New Course Formatter object
-     */
-    public function __construct($campus)
-    {
-        $this->config = parse_ini_file("campuses/$campus/config.ini", true);
-        $this->campus = $campus;
-    }
-    
-    /**
      * {@inheritDoc}
      * @see Twig_Extension::getFunctions()
      */

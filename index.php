@@ -26,7 +26,7 @@ $app->register(new TwigServiceProvider(), array(
 // custom twig filters (=functions)
 
 $app['twig'] = $app->extend("twig", function (\Twig_Environment $twig, Silex\Application $app) use ($campus) {
-    $twig->addExtension(new CourseFormatter($campus));
+    $twig->addExtension(new CourseFormatter());
     return $twig;
 });
 
