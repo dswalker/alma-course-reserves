@@ -20,7 +20,7 @@ use Twig_SimpleFilter;
  * 
  * @author dwalker
  */
-class CourseFormatter extends Twig_Extension
+class Formatter extends Twig_Extension
 {
     /**
      * {@inheritDoc}

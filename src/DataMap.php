@@ -13,11 +13,11 @@ namespace Reserves;
 use Alma\Courses;
 
 /**
- * List of courses
+ * Data access to courses, reading lists, and availability
  * 
  * @author dwalker
  */
-class CourseList
+class DataMap
 {
     /**
      * @var Config
@@ -25,7 +25,7 @@ class CourseList
     protected $config;
     
     /**
-     * New CourseList object
+     * New DataMap object
      */
     public function __construct(Config $config)
     {

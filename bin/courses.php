@@ -6,7 +6,7 @@ chdir(__DIR__ . '/../');
 ini_set('display_errors', '1');
 
 use Reserves\Config;
-use Reserves\CourseList;
+use Reserves\DataMap;
 
 // specify campus(es)
 
@@ -41,7 +41,7 @@ foreach ($campuses as $campus ) {
     try {
         
         $config = new Config("campuses/$campus/config.ini");
-        $processor = new CourseList($config);
+        $processor = new DataMap($config);
         $courses = $processor->getCourses();
         
         if ( $courses == false ) {
