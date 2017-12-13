@@ -1,7 +1,5 @@
 <?php
 
-ini_set('display_errors', '1');
-
 chdir(__DIR__);
 
 require_once 'vendor/autoload.php';
@@ -12,13 +10,20 @@ use Reserves\Formatter;
 use Silex\Provider\TwigServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Debug\Debug;
 
+$env = getenv('APPLICATION_ENV');
 $config = new Config("campuses/$campus/config.ini");
 
 // set-up app
 
 $app = new Silex\Application();
-$app['debug'] = true;
+
+if ($env == 'development') {
+    ini_set('display_errors', '1');
+    Debug::enable();
+    $app['debug'] = true;
+}
 
 // set-up twig
 
@@ -56,7 +61,7 @@ $app->get('/course/{course_id}', function(Request $request, $course_id) use ($ap
     // get the course
     $list = new DataMap($config);
     $course = $list->getCourses()->getCourse($course_id);
-    
+
     // debugging
     if ($request->get('debug', null) != null) {
         return response(print_r($course, true), 'text/plain');
@@ -66,7 +71,7 @@ $app->get('/course/{course_id}', function(Request $request, $course_id) use ($ap
     return $app['twig']->render('course.html.twig', array(
         'course' => $course,
         'campus' => $campus,
-        'course_id' => $course_id
+        'course_id' => $course_id,
     ));
 });
 
