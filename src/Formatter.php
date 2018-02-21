@@ -10,6 +10,7 @@
  */
 namespace Reserves;
 
+use Alma\Courses\Citation;
 use Alma\Courses\Course;
 use Alma\Courses\Metadata;
 use Twig_Extension;
@@ -35,6 +36,7 @@ class Formatter extends Twig_Extension
             new Twig_SimpleFilter('edition', array($this, 'getEdition')),
             new Twig_SimpleFilter('publication_info', array($this, 'getPublicationInfo')),
             new Twig_SimpleFilter('mmsid', array($this, 'getMmsId')),
+            new Twig_SimpleFilter('openurl', array($this, 'getOpenUrl')),
         );
     }
     
@@ -193,5 +195,19 @@ class Formatter extends Twig_Extension
     public function getMmsId(Metadata $metadata)
     {
         return (string) $metadata->json()->mms_id;
+    }
+
+    /**
+     * Workaround to get https OpenURL
+     *
+     * @param Citation $citation
+     * @return string
+     */
+    public function getOpenUrl(Citation $citation)
+    {
+        $url = $citation->getOpenUrl();
+        $url = str_replace('http://', 'https://', $url);
+        
+        return $url;
     }
 }
