@@ -92,7 +92,7 @@ class DataMap
 
         $query = "format=json&apikey=" . $this->config->get('api_key');
         $url = "https://api-na.hosted.exlibrisgroup.com/almaws/v1/bibs/$mms_id/holdings?$query";
-                    
+        
         $results = file_get_contents($url);
         $holdings_json = json_decode($results, true);
         
@@ -102,7 +102,7 @@ class DataMap
             foreach ($holdings_json['holding'] as $holding) {
                 
                 $link = $holding['link'];
-                $items_response = file_get_contents("$link/items?$query");
+                $items_response = file_get_contents("$link/items?limit=100&$query");
                 $items_json = json_decode($items_response, true);
                 
                 // return $items_json;
