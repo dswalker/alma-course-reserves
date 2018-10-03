@@ -14,6 +14,7 @@ use Symfony\Component\Debug\Debug;
 
 $env = getenv('APPLICATION_ENV');
 $config = new Config("campuses/$campus/config.ini");
+$campus_view = "campuses/$campus/views";
 
 // set-up app
 
@@ -28,7 +29,7 @@ if ($env == 'development') {
 // set-up twig
 
 $app->register(new TwigServiceProvider(), array(
-    'twig.path' => array("campuses/$campus/views", __DIR__ . '/views'),
+    'twig.path' => array($campus_view, __DIR__ . '/views'),
 ));
 
 // custom twig filters (=functions)
@@ -47,7 +48,7 @@ $app->get('/', function(Request $request) use ($app, $campus) {
     $contents = file_get_contents($data_file);
     
     // render it
-    return $app['twig']->render('index.html.twig', array(
+    return $app['twig']->render(template_file('index.html.twig'), array(
         'courses' => unserialize($contents),
         'campus' => $campus,
         'last_updated' => date('m-d-Y g:i a', filemtime($data_file))
@@ -119,4 +120,19 @@ function response($content, $content_type)
     $response->headers->set('Content-Type', $content_type);
     $response->setContent($content);
     return $response;
+}
+
+// check for local overriding template file
+
+function template_file($name)
+{
+    global $campus_view;
+    $parts = explode('.', $name);
+    $local = array_shift($parts) . '.local.' . implode('.', $parts);
+    
+    if (file_exists("$campus_view/$local")) {
+        return $local;
+    } else {
+        return $name;
+    }
 }
