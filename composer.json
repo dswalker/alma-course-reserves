@@ -1,12 +1,18 @@
 {
-	"require": {
-        "dswalker/alma-api": "dev-master",
-        "silex/silex": "^2.2",
-        "twig/twig": "^1.35"
-    },
-        "autoload": {
-        "psr-4": {
-            "Reserves\\": "src/"
+	"repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/dswalker/alma-api"
         }
-    }
+    ],
+	"require" : {
+		"dswalker/alma-api" : "dev-master",
+		"silex/silex" : "^2.2",
+		"twig/twig" : "^1.35"
+	},
+	"autoload" : {
+		"psr-4" : {
+			"Reserves\\" : "src/"
+		}
+	}
 }
