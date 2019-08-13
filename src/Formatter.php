@@ -18,7 +18,7 @@ use Twig_SimpleFilter;
 
 /**
  * Formatting filters for Twig
- * 
+ *
  * @author dwalker
  */
 class Formatter extends Twig_Extension
@@ -39,7 +39,7 @@ class Formatter extends Twig_Extension
             new Twig_SimpleFilter('openurl', array($this, 'getOpenUrl')),
         );
     }
-    
+
     /**
      * Course code and name for display
      *
@@ -51,16 +51,17 @@ class Formatter extends Twig_Extension
         $code = $course->getCode();
         $name = $course->getName();
         $notes = $course->getNotes();
-    
-        // if there is a code suffix it with colon
-    
+
+        // if there is a code, suffix it with colon
+
         if ( $code != "" ) {
             $code .= ': ';
         }
-    
-        return trim($code . $name);
+
+        return trim("<span class='course-code'>$code</span>" .
+                    "<span class='course-name'>$name</span>");
     }
-    
+
     /**
      * Instructors in collapsed list
      *
@@ -70,38 +71,38 @@ class Formatter extends Twig_Extension
     public function getInstructors(Course $course)
     {
         // instructor assigned to course
-    
+
     	$inst = array();
-    
+
     	foreach ($course->getInstructors() as $instructor) {
     		$inst[] = $instructor->getLastName();
     	}
-    
+
     	if (count($inst) > 0) {
     	    return trim(implode("; ", $inst));
     	}
-    
+
     	// instructor brought over as note, during migration
-    
+
     	foreach ($course->getNotes() as $note) {
     	    $content = $note->getContent();
-    
+
     	    if (strstr($content, 'Instructor:')) {
     	        return trim(str_replace('Instructor:', '', $content));
     	    } elseif (strstr($content, 'PROF_TA:')) {
     	        return trim(str_replace('PROF_TA:', '', $content));
     	    }
     	}
-    
+
     	// nada
     	return null;
     }
-    
+
     /**
      * Title formatted for display
-     * 
+     *
      * Show title, remove statement of responsibility
-     * 
+     *
      * @param Metadata $metadata
      * @return string
      */
@@ -109,20 +110,20 @@ class Formatter extends Twig_Extension
     {
         $title = $metadata->getTitle();
         $jtitle = $metadata->getJournalTitle();
-        
+
         if ($title == ""  && $jtitle != "") {
             $title = $jtitle;
         }
-        
+
         if (strstr($title, '/')) {
             $parts = explode('/', $title);
             array_pop($parts);
             $title = implode('/', $parts);
         }
-    
+
         return $title;
     }
-    
+
     /**
      * Edition formatted for display
      *
@@ -135,7 +136,7 @@ class Formatter extends Twig_Extension
     {
         $edition = $metadata->getEdition();
         $edition = trim($edition);
-        
+
         // just a number, so add suffix
         if ( is_numeric($edition)) {
             if ($edition == '1') {
@@ -148,21 +149,21 @@ class Formatter extends Twig_Extension
                 $edition .= 'th';
             }
         }
-        
+
         // check for edition number but not the word edition
-        if (!stristr($edition, 'ed') && (stristr($edition, 'st') || stristr($edition, 'nd') || 
+        if (!stristr($edition, 'ed') && (stristr($edition, 'st') || stristr($edition, 'nd') ||
             stristr($edition, 'rd') || stristr($edition, 'th'))) {
-            $edition .= " ed.";        
+            $edition .= " ed.";
         }
-        
+
         return $edition;
     }
-    
+
     /**
      * Publication information
-     * 
+     *
      * Put together place, publisher, and date
-     * 
+     *
      * @param Metadata $metadata
      * @return string
      */
@@ -172,23 +173,23 @@ class Formatter extends Twig_Extension
         $place = $metadata->getPlaceOfPublication();
         $publisher = $metadata->getPublisher();
         $date = $metadata->getPublicationDate();
-    
+
         if ($publisher != "") {
             $final = $place . ' ' . $publisher;
-    
+
             if ($date != "") {
                 $final .= ', ' . $date;
             }
         } elseif ($date != "") {
             return $date;
         }
-    
+
         return $final;
     }
-    
+
     /**
      * Workaround to get MMS_ID
-     * 
+     *
      * @param Metadata $metadata
      * @return string
      */
@@ -207,7 +208,7 @@ class Formatter extends Twig_Extension
     {
         $url = $citation->getOpenUrl();
         $url = str_replace('http://', 'https://', $url);
-        
+
         return $url;
     }
 }

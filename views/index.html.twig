@@ -19,12 +19,12 @@
 {% block content %}
 
     <div class="courses">
-    
+
     	<h1>Course Reserves</h1>
-    	
+
     	{% block related_links %}
         {% endblock %}
-    
+
     	<table id="courses" class="display" style="width:100%">
     		<thead>
     	    	<tr>
@@ -36,15 +36,15 @@
     		<tr>
     			<td>
     				<a href="course/{{ course.id }}">
-    					{{ course|course_name }}
+    					{{ course|course_name|raw }}
     				</a>
     			</td>
     			<td>{{ course|instructors }}</td>
     		</tr>
     		{% endfor %}
     	</table>
-    
+
     	<p class="last-update">Last updated {{ last_updated }}</p>
     </div>
-    
+
 {%  endblock %}
