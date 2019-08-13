@@ -18,31 +18,31 @@
         	var mms_id = attr_id.substring(4);
         	var course_id = "{{ course_id }}";
         	var openurl = $(this).find('a.openurl').attr('href');
-        	
+
             $.getJSON(course_id + "/" + mms_id, function(data) {
 
             	var location = "";
             	var call_number = "";
             	var availability = "";
             	var num_available = 0;
-            	
+
             	$.each( data, function(key, item) {
-                	
+
 					if (location != "" && location != item.location) {
-						location = '<a href="' + openurl + '" target="_blank">Multiple locations</a>';						
+						location = '<a href="' + openurl + '" target="_blank">Multiple locations</a>';
 					} else {
 						location = item.location;
 					}
-					
+
             		if (call_number != "" && call_number != item.call_number) {
-						call_number = '<a href="' + openurl + '" target="_blank">Multiple call numbers</a>';						
+						call_number = '<a href="' + openurl + '" target="_blank">Multiple call numbers</a>';
 					} else {
 						call_number = item.call_number;
 					}
 
 					if (availability != "" && availability != item.availability) {
 						openurl
-						availability = '<a href="' + openurl + '" target="_blank">Check availability</a>';					
+						availability = '<a href="' + openurl + '" target="_blank">Check availability</a>';
 					} else {
 						availability = item.availability;
 					}
@@ -57,7 +57,7 @@
             	if (num_available < data.length) {
             		availability_statement = num_available + " of " + data.length + " available";
                 }
-                
+
                 $("#row-" + mms_id + " div.location").replaceWith(location);
                 $("#row-" + mms_id + " div.call-number").replaceWith(call_number);
                 $("#row-" + mms_id + " div.status").replaceWith(availability_statement);
@@ -88,7 +88,7 @@
     	    {% for list in course.readinglists %}
     		{% for citation in list.citations %}
     		{% set metadata = citation.metadata %}
-    		{% if not ( metadata.title == "" and metadata.articletitle == "" and metadata.author == "") %}
+    		{% if not ( metadata.title == "" and metadata.articletitle == "" and metadata.author == "") and not metadata|mmsid == "" %}
     		<tr class="reading" id="row-{{ metadata|mmsid }}">
     			<td>
     				<a class="openurl" href="{{ citation|openurl }}">{{ metadata|title }}</a>
@@ -105,8 +105,8 @@
     		{% endfor %}
     		{% endfor %}
     	</table>
-    	
+
     	<p class="last-update">Last updated {{ "now"|date("m-d-Y g:i a") }}</p>
     </div>
-    
+
 {%  endblock %}
