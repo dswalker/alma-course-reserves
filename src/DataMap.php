@@ -89,6 +89,31 @@ class DataMap
     public function getItems($mms_id)
     {
         $items = array();
+        
+        // electronic holdings
+        
+        $query = "apikey=" . $this->config->get('api_key');
+        $url = "https://api-na.hosted.exlibrisgroup.com/almaws/v1/bibs/$mms_id/portfolios?$query";
+        
+        try {
+            $xml = simplexml_load_file($url);
+            $e_availability = $xml->xpath("//portfolio");
+            
+            if (count($e_availability) > 0 ) {
+                foreach ($e_availability as $e_available) {
+                    $items[] = array(
+                        'mms_id' => $mms_id,
+                        'location' => 'Online',
+                        'availability' => (string) $e_available,
+                        'available' => 1
+                    );
+                }
+            }
+        } catch (\Exception $e) {
+            throw $e;
+        }
+        
+        // physical holdings
 
         $query = "format=json&apikey=" . $this->config->get('api_key');
         $url = "https://api-na.hosted.exlibrisgroup.com/almaws/v1/bibs/$mms_id/holdings?$query";
