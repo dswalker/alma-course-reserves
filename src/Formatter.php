@@ -50,7 +50,7 @@ class Formatter extends Twig_Extension
     {
         $code = $course->getCode();
         $name = $course->getName();
-        $notes = $course->getNotes();
+        $section = $course->getSection();
 
         // if there is a code, suffix it with colon
 
@@ -58,7 +58,12 @@ class Formatter extends Twig_Extension
             $code .= ': ';
         }
 
+        if ( $section != "" ) {
+            $section .= ': ';
+        }
+
         return trim("<span class='course-code'>$code</span>" .
+                    "<span class='course-section'>$section</span>" .
                     "<span class='course-name'>$name</span>");
     }
 
