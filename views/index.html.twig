@@ -34,12 +34,14 @@
     	    </thead>
     		{%  for course in courses %}
     		<tr>
-    			<td>
+    			<td class="course-name">
     				<a href="course/{{ course.id }}">
     					{{ course|course_name|raw }}
     				</a>
     			</td>
-    			<td>{{ course|instructors }}</td>
+    			<td class="course-instructors">
+					{{ course|instructors }}
+				</td>
     		</tr>
     		{% endfor %}
     	</table>
