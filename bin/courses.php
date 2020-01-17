@@ -50,7 +50,7 @@ foreach ($campuses as $campus ) {
         }
         
 		$course_list = array(); // courses
-		$x = 0; // counter
+		$x = 1; // counter
 			
 		do {
 			// get courses in batches of 100
