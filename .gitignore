@@ -1,5 +1,6 @@
 campuses/
 vendor/
+.DS_Store
 .settings
 .buildpath
 .project
