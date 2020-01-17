@@ -62,6 +62,11 @@ foreach ($campuses as $campus ) {
 				
 				// only active courses
 				if ( $course->getStatus() == 'ACTIVE') {
+                    // blank course code and section for leganto campuses
+                    if ($config->get('leganto', false, false) == true) {
+                        $course->setCode("");
+                        $course->setSection("");
+                    }
 				    $course_list[] = $course;
 				}
 				
