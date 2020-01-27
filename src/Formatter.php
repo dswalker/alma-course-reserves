@@ -115,9 +115,14 @@ class Formatter extends Twig_Extension
     {
         $title = $metadata->getTitle();
         $jtitle = $metadata->getJournalTitle();
+        $atitle = $metadata->getArticleTitle();
 
-        if ($title == ""  && $jtitle != "") {
-            $title = $jtitle;
+        if ($title == "") {
+            if ($jtitle != "") {
+                $title = $jtitle;
+            } elseif ($atitle != "") {
+                $title = $atitle;
+            }
         }
 
         if (strstr($title, '/')) {
