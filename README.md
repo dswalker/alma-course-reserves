@@ -1,6 +1,6 @@
-=Alma Course Reserves
+# Alma Course Reserves
 
-== Example Apache config
+## Example Apache config
 
 ```
 <VirtualHost *:80>
@@ -28,5 +28,5 @@
 		RewriteRule ^.*$ index.php [NC,L]
 	</Directory>
 
-  </VirtualHost>
-  ```
+</VirtualHost>
+```
